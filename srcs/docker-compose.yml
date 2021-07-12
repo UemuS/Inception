@@ -4,3 +4,12 @@ services:
     build: requirements/nginx
     ports: 
       - 443:443
+    volumes:
+      - /data/wp/:/var/www/html/
+  wordpress:
+      build: requirements/wordpress
+      volumes:
+        - /data/wp/:/var/www/html/
+      ports:
+        - "8000:443"
+      restart: always
