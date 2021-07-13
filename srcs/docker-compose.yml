@@ -2,14 +2,26 @@ version: '3.9'
 services:
   nginx:
     build: requirements/nginx
+    container_name: nginx
     ports: 
       - 443:443
     volumes:
       - /data/wp/:/var/www/html/
+    networks:
+      - wordpress
+
+
   wordpress:
-      build: requirements/wordpress
-      volumes:
-        - /data/wp/:/var/www/html/
-      ports:
-        - "8000:443"
-      restart: always
+    build: requirements/wordpress
+    container_name: wordpress
+    volumes:
+      - /data/wp/:/var/www/html/
+    restart: always
+    networks:
+      - wordpress
+    env_file:
+      - .env
+
+networks:
+  wordpress:
+    driver: bridge
