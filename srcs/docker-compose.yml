@@ -6,7 +6,7 @@ services:
     ports: 
       - 443:443
     volumes:
-      - /data/wp/:/var/www/html/
+      - /home/yihssan/data/html:/var/www/html/
     networks:
       - wordpress
 
@@ -15,7 +15,7 @@ services:
     build: requirements/wordpress
     container_name: wordpress
     volumes:
-      - /data/wp/:/var/www/html/
+      - /home/yihssan/data/html:/var/www/html/
     restart: always
     networks:
       - wordpress
@@ -25,3 +25,16 @@ services:
 networks:
   wordpress:
     driver: bridge
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yihssan/data/html'
+  nginx:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yihssan/data/html'
