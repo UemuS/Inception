@@ -11,7 +11,6 @@ server{
 	index index.php index.html index.htm index.nginx-debian.html;
 
 	location / {
-		autoindex on;
 		try_files $uri $uri/ =404;
 	}
 	location ~ \.php$ {

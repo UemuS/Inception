@@ -9,6 +9,7 @@ RUN apt install -y ufw iptables
 
 RUN ufw allow 3306
 
+COPY tools/conf /
 COPY tools/config.sh config.sh
 RUN chmod +x config.sh
 CMD ["sh", "config.sh"]

@@ -21,22 +21,22 @@ services:
       - wordpress
     env_file:
       - .env
-    # depends_on:
-    #   - mariadb
+    depends_on:
+      - mariadb
 
 
-  # mariadb:
-  #   build: requirements/mariadb
-  #   container_name: mariadb
-  #   volumes:
-  #     - /home/yihssan/data/mysql:/var/lib/mysql
-  #   restart: always
-  #   ports:
-  #     - 3306:3306
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - wordpress
+  mariadb:
+    build: requirements/mariadb
+    container_name: mariadb
+    volumes:
+      - /home/yihssan/data/mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
+    networks:
+      - wordpress
     
 networks:
   wordpress:
@@ -54,9 +54,9 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '/home/yihssan/data/html'
-  # mariadb:
-  #   driver: local
-  #   driver_opts:
-  #     type: 'none'
-  #     o: 'bind'
-  #     device: '/home/yihssan/data/mysql'
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yihssan/data/mysql'
