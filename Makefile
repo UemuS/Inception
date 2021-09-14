@@ -13,6 +13,15 @@ stop:
 ps:
 	$(DOCKER_COMPSOE) -f $(DOCKER_COMPOSE_FILE) ps
 
+yes:
+	docker system prune
+delvol:
+	docker volume rm $(docker volume ls -q)
+delcon:
+	docker rm -f $(docker ps -a -q)
+delfile:
+	rm -rf /home/yihssan/data/html
+
 re: all
 
 .PHONY: all up down start stop

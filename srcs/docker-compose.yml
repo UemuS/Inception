@@ -9,6 +9,8 @@ services:
       - /home/yihssan/data/html:/var/www/html/
     networks:
       - wordpress
+    depends_on:
+      - wordpress
 
 
   wordpress:
