@@ -14,6 +14,7 @@ echo "Modifying wp-config file"
 sed -i "s/hostname/$WP_DATABASE_NAME/g" /wp-config.php
 sed -i "s/the_user/$WP_DATABASE_USER/g" /wp-config.php
 sed -i "s/dbpass/$WP_DATABASE_PASSWORD/g" /wp-config.php
+mv /wp-config.php /var/www/html/wp-config.php
 fi
 #run php-fpm in the foreground so it could be PID 1 in a docker container.
 #solution from here https://stackoverflow.com/questions/37313780/how-can-i-start-php-fpm-in-a-docker-container-by-default/44409813

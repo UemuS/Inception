@@ -4,7 +4,6 @@ RUN apt update -y
 RUN apt upgrade -y
 RUN apt install mariadb-server -y
 
-COPY tools/conf /
-COPY tools/config.sh config.sh
+COPY tools/ /
 RUN chmod +x config.sh
 CMD ["sh", "config.sh"]

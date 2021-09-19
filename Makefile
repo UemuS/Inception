@@ -3,7 +3,7 @@ DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 
 all:	up
 up:
-	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build -d
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
 start:
@@ -14,14 +14,16 @@ ps:
 	$(DOCKER_COMPSOE) -f $(DOCKER_COMPOSE_FILE) ps
 
 yes:
-	docker system prune
+	docker system prune -a
 delvol:
-	docker volume rm $(docker volume ls -q)
+	docker volume rm -f $(docker volume ls -q)
 delcon:
 	docker rm -f $(docker ps -a -q)
 delfile:
-	rm -rf /home/yihssan/data/html
+	rm -rf /home/yihssan/data
 
 re: all
 
-.PHONY: all up down start stop
+delet: yes delcon delfile
+
+.PHONY: all up down start stopdocker rm -f $(docker ps -a -q)
