@@ -1,16 +1,15 @@
-#!/bin/bash
-mv /conf /etc/mysql/mariadb.conf.d/50-server.cnf
-mysql_install_db --user=mysql --datadir=/var/lib/mysql/
-if [ "$(ls -A /var/lib/mysql/${WP_DATABASE_NAME})" ]; then
-echo "Directory isnt empty"
-else
+#DB CREATION
 service mysql start
 sleep 2
-mysql -u root -e "CREATE USER '${WP_DATABASE_USER}'@'%' IDENTIFIED BY '${WP_DATABASE_PASSWORD}'"
-mysql -u root -e "CREATE DATABASE ${WP_DATABASE_NAME};use ${WP_DATABASE_NAME}"
-mysql -u root -e "use ${WP_DATABASE_NAME};GRANT ALL PRIVILEGES ON * TO '${WP_DATABASE_USER}'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mysql -u root wordpress < /wp.sql
-mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${WP_ROOT}';"
-fi
-echo "Running mariadb in the foreground"
-mysqld_safe --datadir='/var/lib/mysql/'
+mysql -e "CREATE DATABASE IF NOT EXISTS `${WP_DATABASE_NAME}`" 
+#DELETE ANONYMOUS USERS
+mysql -e "DELETE FROM mysql.user WHERE User=''" 
+#mysql user with access only to wordpress
+mysql -e "CREATE USER IF NOT EXISTS `${WP_DATABASE_USER}`@'%' IDENTIFIED BY '$WP_DATABASE_PASSWORD'"
+mysql -e "GRANT ALL PRIVILEGES ON `${WP_DATABASE_NAME}`.* TO `${WP_DATABASE_USER}`@'%'" 
+#SETTING PASSWORD TO ROOT PLUS REMOTE ACCESS 
+mysql -e "UPDATE mysql.user SET password=PASSWORD('$WP_ROOT') , host='%', plugin='mysql_native_password' WHERE User='root'"
+mysql -e "GRANT ALL PRIVILEGES ON . TO `root`@'%' WITH GRANT OPTION"
+mysql -e "FLUSH PRIVILEGES"
+service mysql stop
+mysqld_safe
